@@ -1,0 +1,31 @@
+module trans(a,b,an);
+input a,en;
+output b;
+reg b;
+always @(a,en)
+begin
+if(en == a’b1)
+b=a;
+else
+b=1’bz;
+end
+endmodule
+
+Test Bench:
+module trans_test;
+reg a;
+reg en;
+wire b;
+trans uut (
+.a(a),
+.b(b),
+.en(en)
+);
+initial begin
+en = 1; a=1 ; #100;
+en = 1; a=0 ; #100;
+en = 0; a=1 ; #100;
+en = 0; a=1 ; #100;
+
+end
+endmodule
