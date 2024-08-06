@@ -1,0 +1,29 @@
+module symount (clk, rst, count);
+input clk, rst;
+output [3:0] count;
+reg [3:0] count;
+always@posedge clk)
+begin
+if (rst)
+count = 4'b0000;
+else
+count = count + 4'b0001;
+end
+endmodule
+
+Test Bench
+module syncounttst;
+reg clk, rst;
+wire [3:0] count;
+syncount uut (.clk(clk), .rst(rst), .count(count));
+initial begin
+clk = 0;
+forever #5 clk = ~clk;
+end
+initial begin
+rst = 1;
+#10 rst = 0;
+#10 rst = 1;
+#10 rst = 0;
+end
+endmodule
