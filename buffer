@@ -1,0 +1,20 @@
+module buffer (a,b);
+input a;
+output b;
+assign b = (a);
+endmodule
+Test Bench:
+module buffer_test;
+reg a;
+wire b;
+buffer uut (
+.a(a),
+.b(b)
+);
+initial begin
+a = 0; #100;
+a = 1; #100;
+a = 0; #100;
+a = 1; #100;
+end
+endmodule
