@@ -1,0 +1,42 @@
+module jkff( jk, reset, clk,q, qbar );
+input [0:1]jk ;
+input reset, clk ;
+output q, qbar ;
+reg q, qbar ;
+always @( jk , reset, posedge clk )
+begin
+if ( reset == 0 )
+begin
+q = 1'b0;
+qbar=1'b1;
+end
+else
+begin
+case(jk)
+2'b00:begin q=q;qbar=qbar;end
+2'b01:begin q=1'b0;qbar=1'b1;end
+2'b10:begin q=1'b1;qbar=1'b0;end
+2'b11:begin q=~q;qbar=~qbar;end
+endcase
+end
+end
+endmodule
+
+Test Bench :
+module jkff_test;
+reg [0:1] jk;reg reset;reg clk;
+wire q;wire qbar;
+jkff uut (.jk(jk),.reset(reset),.clk(clk),
+.q(q), .qbar(qbar));
+initial
+clk =1'b0;
+always #10 clk=~clk;
+initial begin
+reset=0; #100;
+reset=1;
+jk=00; #100;
+jk=01; #100;
+jk=10; #100;
+jk=11; #100;
+end
+endmodule
