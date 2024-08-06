@@ -1,0 +1,28 @@
+module uni(a,b,z1,z2,z3,z4,z5,z6);
+input a,b;
+output z1,z2,z3,z4,z5,z6;
+assign z1 = a&b;
+assign z2 = a | b;
+assign z3 = ~(a&b);
+assign z4 = ~(a | b);
+assign z5 = a ^ b;
+assign z6 = ~(a ^ b);
+endmodule
+
+Test Bench:
+module uni_test;
+reg a; reg b;
+wire z1; wire z2; wire z3;
+wire z4; wire z5; wire z6;
+uni uut (
+.a(a), .b(b),
+.z1(z1), .z2(z2),.z3(z3),
+.z4(z4), .z5(z5),.z6(z6)
+);
+initial begin
+a = 0;b = 0;#100;
+a = 0;b = 1;#100;
+a = 1;b = 0;#100;
+a = 1;b = 1;#100;
+end
+endmodule
