@@ -1,28 +1,37 @@
-module asyncount(clk,rst,count);
-input clk,rst:
-output [3:0] count;
-reg [3:0] count;
-always @ negedge clk
-if(rst)
-count[o]=1'b0;
-else
-count [0] = ~count [0];
-always @ (negedge count [0])
+module asyncount (
+    input clk,
+    input rst,
+    output reg [3:0] count
+);
+always @(negedge clk)
+begin
 if (rst)
-count [1] = 1'b0;
+count[0] <= 1'b0;
 else
-count [1] = ~count [1];
-always @ (negedge count [1])
+count[0] <= ~count[0];
+end
+always @(negedge count[0])
+begin
 if (rst)
-count [2] = 1'b0;
+count[1] <= 1'b0;
 else
-count [2] = ~count [2];
-always @ (negedge count [2])
+count[1] <= ~count[1];
+end
+always @(negedge count[1])
+begin
 if (rst)
-count [3] = 1'b0;
+count[2] <= 1'b0;
 else
-count [3] = ~count [3];
-endmodule.
+count[2] <= ~count[2];
+end
+always @(negedge count[2])
+begin
+if (rst)
+count[3] <= 1'b0;
+else
+count[3] <= ~count[3];
+end
+endmodule
 
 Test Bench
 module asynccount_tst;
