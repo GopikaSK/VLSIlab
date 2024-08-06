@@ -1,0 +1,38 @@
+module tff( t, reset, clk,q, qbar );
+input t ;
+input reset, clk ;
+output q, qbar ;
+reg q, qbar ;
+always @( t , reset, posedge clk )
+begin
+if ( reset == 0 )
+begin
+q = 1'b0;
+qbar=1'b1;
+end
+else
+begin
+case(t)
+1'b0: begin q=q; qbar=qbar; end
+1'b1: begin q=qbar; qbar=~qbar; end
+endcase
+end
+end
+endmodule
+
+Test Bench:
+module tff_test;
+reg t;reg reset;reg clk;
+wire q;wire qbar;
+tff uut (.t(t),.reset(reset),.clk(clk),
+.q(q),.qbar(qbar));
+initial
+clk =1'b0;
+always #10 clk=~clk;
+initial begin
+reset=0; #100;
+reset=1;
+t=1'b0; #100;
+t=1'b1; #100;
+end
+endmodule
