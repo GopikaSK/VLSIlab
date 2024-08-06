@@ -1,36 +1,41 @@
-module dff( d, reset, clk,q, qbar );
-input d ;
-input reset, clk ;
-output q, qbar ;
-reg q, qbar ;
-always @( reset, posedge clk )
-begin
-if ( reset == 0 )
-begin
-q = 1’b0;
-qbar=1’b1;
-end
-else
-begin
-q = 1’b0;
-qbar = 1’b1;
-end
-end
+module dff (
+    input d,
+    input reset,
+    input clk,
+    output reg q,
+    output reg qbar
+);
+    always @(posedge clk or posedge reset)
+    begin
+        if (reset)
+        begin
+            q <= 1'b0;
+            qbar <= 1'b1;
+        end
+        else
+        begin
+            q <= d;
+            qbar <= ~d;
+        end
+    end
 endmodule
 
 Test Bench:
 module dff_test;
-reg d; reg reset; reg clk;
-wire q; wire qbar;
-dff uut (.d(d), .reset(reset),.clk(clk),
-.q(q), .qbar(qbar) );
-initial
-clk =1'b0;
-always #10 clk=~clk;
-initial begin
-reset=0; #100;
-reset=1;
-d=1'b0; #100;
-d=1'b1; #100;
-end
+    reg d;
+    reg reset;
+    reg clk;
+    wire q;
+    wire qbar;
+    dff uut (.d(d), .reset(reset), .clk(clk), .q(q), .qbar(qbar));
+    initial
+    begin
+       clk =1'b0;
+       always #10 clk=~clk;
+       initial begin
+       reset=0; #100;
+       reset=1;
+       d=1'b0; #100;
+       d=1'b1; #100;
+    end
 endmodule
