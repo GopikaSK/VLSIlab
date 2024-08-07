@@ -1,4 +1,4 @@
-module async_up_down_counter (
+Imodule async_up_down_counter (
     input wire clk,
     input wire reset,
     input wire up_down, // Control signal: 1 for up, 0 for down
@@ -19,20 +19,39 @@ endmodule
 
 
 Test Bench
-module asynccount_tst;
-reg clk;
-reg rst;
-wire [3:0] count;
-asyncount uut(.clk(clk), .rst(rst), .count(count));
-  initial begin
-    clk = 0; rst = 0;
-    forever #5 clk = ~clk;
-end
-initial begin
-  rst = 1;
-end
-#10 rst = 0;
-#100 rst = 1;
-#10 rst = 0;
-end
-endmodule.
+module async_up_down_counter_tb;
+    reg clk;
+    reg reset;
+    reg up_down;
+    wire [3:0] count;
+    // Instantiate the Unit Under Test (UUT)
+    async_up_down_counter uut (
+        .clk(clk),
+        .reset(reset),
+        .up_down(up_down),
+        .count(count)
+    );
+    initial begin
+        // Initialize Inputs
+        clk = 0;
+        reset = 0;
+        up_down = 0;
+
+        // Generate clock signal
+        forever #5 clk = ~clk;
+    end
+    initial begin
+        // Apply reset
+        reset = 1;
+        #10 reset = 0;
+        // Test counting up
+        up_down = 1;
+        #100;
+        // Test counting down
+        up_down = 0;
+        #100;
+        // Apply reset again
+        reset = 1;
+        #10 reset = 0;
+    end
+endmodule
